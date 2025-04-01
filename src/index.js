@@ -1,13 +1,20 @@
 require('dotenv').config();
-const express = require('express'); // Añade esta línea
+const express = require('express');
 const mongoose = require('mongoose');
+const animalRoutes = require('./routes/animal');
+const areaRoutes = require('./routes/area');
 
-// Crea la aplicación Express
-const app = express(); // Añade esta línea
+// 1. Primero creamos la aplicación Express
+const app = express();
 
-// Middleware para parsear JSON
-app.use(express.json()); // Añade esta línea
+// 2. Configuramos middlewares
+app.use(express.json());
 
+// 3. Configuramos las rutas ANTES de la conexión a la DB
+app.use('/api/animals', animalRoutes); // Rutas de animales
+app.use('/api/areas', areaRoutes);     // Rutas de áreas
+
+// 4. Conexión a MongoDB
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI, {
@@ -21,18 +28,20 @@ const connectDB = async () => {
   }
 };
 
-// Ruta de ejemplo para probar
-app.post('/api/animals', (req, res) => { // Añade esta ruta
-  console.log(req.body);
-  res.json({
-    ...req.body,
-    _id: "62447d182ef5e09ee06f4932",
-    __v: 0
+// 5. Verificación de conexión
+mongoose.connection.on('connected', () => {
+  console.log('Conectado a la DB:', mongoose.connection.db.databaseName);
+  mongoose.connection.db.listCollections().toArray((err, collections) => {
+    if (err) return console.error(err);
+    console.log('Colecciones existentes:', collections.map(c => c.name));
   });
 });
 
-connectDB();
-
-app.listen(3000, () => {
-  console.log('Servidor escuchando en puerto 3000');
+// 6. Iniciamos la conexión y el servidor
+connectDB().then(() => {
+  app.listen(3000, () => {
+    console.log('Servidor escuchando en puerto 3000');
+  });
 });
+
+//http://localhost:3000/api/animals
