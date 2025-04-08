@@ -1,23 +1,22 @@
-const express = require("express");
-const router = express.Router();
-const Area = require("../models/area"); // Asegúrate de tener este modelo
+const mongoose = require("mongoose");
 
-// Obtener un área por ID
-router.get("/:id", async (req, res) => {
-  try {
-    const area = await Area.findById(req.params.id);
-    
-    if (!area) {
-      return res.status(404).json({ message: "Área no encontrada" });
-    }
-    
-    res.json(area);
-  } catch (error) {
-    res.status(500).json({ 
-      message: "Error al obtener el área",
-      error: error.message 
-    });
-  }
+const areaSchema = mongoose.Schema({
+  nombre: {
+    type: String,
+    required: true
+  },
+  descripcion: {
+    type: String,
+    required: true
+  },
+  capacidad: {
+    type: Number,
+    required: true
+  },
+  animales: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Animal'
+  }]
 });
 
-module.exports = router;
+module.exports = mongoose.model("Area", areaSchema);

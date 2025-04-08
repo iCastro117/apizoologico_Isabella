@@ -1,18 +1,27 @@
-require('dotenv').config();
+require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
+
+
+// Verifica que la variable esté cargada
+console.log('URI de MongoDB:', process.env.MONGODB_URI); // Agrega esto para debug
 const express = require('express');
 const mongoose = require('mongoose');
 const animalRoutes = require('./routes/animal');
 const areaRoutes = require('./routes/area');
 
-// 1. Primero creamos la aplicación Express
+// 1. Crear la aplicación Express
 const app = express();
 
-// 2. Configuramos middlewares
+// 2. Configurar middlewares
 app.use(express.json());
 
-// 3. Configuramos las rutas ANTES de la conexión a la DB
-app.use('/api/animals', animalRoutes); // Rutas de animales
-app.use('/api/areas', areaRoutes);     // Rutas de áreas
+// 3. Configurar rutas
+app.use('/api/animals', animalRoutes);
+app.use('/api/areas', areaRoutes);
+
+// Ruta de prueba
+app.get('/', (req, res) => {
+  res.send('API del Zoológico funcionando');
+});
 
 // 4. Conexión a MongoDB
 const connectDB = async () => {
@@ -22,9 +31,10 @@ const connectDB = async () => {
       socketTimeoutMS: 45000,
     });
     console.log('✅ Conexión a MongoDB exitosa');
+    return true;
   } catch (err) {
     console.error('❌ Error de conexión a MongoDB:', err.message);
-    process.exit(1);
+    return false;
   }
 };
 
@@ -37,11 +47,18 @@ mongoose.connection.on('connected', () => {
   });
 });
 
-// 6. Iniciamos la conexión y el servidor
-connectDB().then(() => {
-  app.listen(3000, () => {
-    console.log('Servidor escuchando en puerto 3000');
-  });
-});
+// 6. Iniciar la aplicación
+const startServer = async () => {
+  const isConnected = await connectDB();
+  if (!isConnected) {
+    console.log('No se pudo conectar a la base de datos. Saliendo...');
+    process.exit(1);
+  }
 
-//http://localhost:3000/api/animals
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`Servidor escuchando en http://localhost:${PORT}`);
+  });
+};
+
+startServer();

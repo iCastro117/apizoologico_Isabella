@@ -1,4 +1,4 @@
-const mongoose = require("mongoose"); // importando el componente mongoose
+const mongoose = require("mongoose");
 
 const animalSchema = mongoose.Schema({
   nombre: {
@@ -15,7 +15,12 @@ const animalSchema = mongoose.Schema({
   },
   fecha: {
     type: Date,
+    default: Date.now,
+  },
+  codigo: {
+    type: String,
     required: true,
+    unique: true
   }
 });
 
