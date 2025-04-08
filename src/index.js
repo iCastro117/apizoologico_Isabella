@@ -1,6 +1,5 @@
 require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
 
-
 // Verifica que la variable esté cargada
 console.log('URI de MongoDB:', process.env.MONGODB_URI); // Agrega esto para debug
 const express = require('express');
