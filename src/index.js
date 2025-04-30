@@ -4,60 +4,71 @@ require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') }
 console.log('URI de MongoDB:', process.env.MONGODB_URI); // Agrega esto para debug
 const express = require('express');
 const mongoose = require('mongoose');
+const cors = require('cors'); // Importa el paquete cors
 const animalRoutes = require('./routes/animal');
 const areaRoutes = require('./routes/area');
+
 
 // 1. Crear la aplicación Express
 const app = express();
 
+
 // 2. Configurar middlewares
 app.use(express.json());
 
-// 3. Configurar rutas
+
+// 3. Configurar CORS
+app.use(cors({
+    origin: 'http://localhost:4200', // Permitir solicitudes desde tu aplicación Angular
+    methods: 'GET,POST,PUT,DELETE', // Permitir métodos HTTP específicos
+    allowedHeaders: 'Content-Type,Authorization' // Permitir headers específicos
+}));
+
+// 4. Configurar rutas
 app.use('/api/animals', animalRoutes);
 app.use('/api/areas', areaRoutes);
 
 // Ruta de prueba
 app.get('/', (req, res) => {
-  res.send('API del Zoológico funcionando');
+    res.send('API del Zoológico funcionando');
 });
 
-// 4. Conexión a MongoDB
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGODB_URI, {
-      serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 45000,
-    });
-    console.log('✅ Conexión a MongoDB exitosa');
-    return true;
-  } catch (err) {
-    console.error('❌ Error de conexión a MongoDB:', err.message);
-    return false;
-  }
+// 5. Conexión a MongoDB
+const connectDB = async() => {
+    try {
+        await mongoose.connect(process.env.MONGODB_URI, {
+            serverSelectionTimeoutMS: 5000,
+            socketTimeoutMS: 45000,
+        });
+        console.log('✅ Conexión a MongoDB exitosa');
+        return true;
+    } catch (err) {
+        console.error('❌ Error de conexión a MongoDB:', err.message);
+        return false;
+    }
 };
 
-// 5. Verificación de conexión
+// 6. Verificación de conexión
 mongoose.connection.on('connected', () => {
-  console.log('Conectado a la DB:', mongoose.connection.db.databaseName);
-  mongoose.connection.db.listCollections().toArray((err, collections) => {
-    if (err) return console.error(err);
-    console.log('Colecciones existentes:', collections.map(c => c.name));
-  });
+    console.log('Conectado a la DB:', mongoose.connection.db.databaseName);
+    mongoose.connection.db.listCollections().toArray((err, collections) => {
+        if (err) return console.error(err);
+        console.log('Colecciones existentes:', collections.map(c => c.name));
+    });
 });
 
-// 6. Iniciar la aplicación
-const startServer = async () => {
-  const isConnected = await connectDB();
-  if (!isConnected) {
-    console.log('No se pudo conectar a la base de datos. Saliendo...');
-    process.exit(1);
-  }
+// 7. Iniciar la aplicación
+const startServer = async() => {
+    const isConnected = await connectDB();
+    if (!isConnected) {
+        console.log('No se pudo conectar a la base de datos. Saliendo...');
+        process.exit(1);
+    }
 
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`Servidor escuchando en http://localhost:${PORT}`);
-  });
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`Servidor escuchando en http://localhost:${PORT}`);
+    });
 };
 
 startServer();
