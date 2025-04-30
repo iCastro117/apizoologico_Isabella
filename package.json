@@ -1,31 +1,33 @@
 {
-  "name": "apizoologico_isabella",
-  "version": "1.0.0",
-  "description": "npm install dotenv express mongoose",
-  "main": "index.js",
-  "scripts": {
-    "dev": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "mongodb": "^6.15.0",
-    "mongoose": "^8.14.1"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.10"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/iCastro117/apizoologico_Isabella.git"
-  },
-  "bugs": {
-    "url": "https://github.com/iCastro117/apizoologico_Isabella/issues"
-  },
-  "homepage": "https://github.com/iCastro117/apizoologico_Isabella#readme"
+    "name": "apizoologico_isabella",
+    "version": "1.0.0",
+    "description": "npm install dotenv express mongoose",
+    "main": "index.js",
+    "scripts": {
+        "dev": "nodemon src/index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+
+        "cors": "^2.8.5",
+        "dotenv": "^16.5.0",
+        "express": "^5.1.0",
+        "mongodb": "^6.15.0",
+        "mongoose": "^8.14.1"
+    },
+    "devDependencies": {
+        "nodemon": "^3.1.10"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/iCastro117/apizoologico_Isabella.git"
+    },
+    "bugs": {
+        "url": "https://github.com/iCastro117/apizoologico_Isabella/issues"
+    },
+    "homepage": "https://github.com/iCastro117/apizoologico_Isabella#readme"
+
 }

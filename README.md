@@ -20,17 +20,31 @@ node src/index.js
 //http://localhost:3000/api/animals
 
 
+<<<<<<< HEAD
 //PUT: http://localhost:3000/api/animals/67f587ce96d3e3905a2df222
 
 // GET: http://localhost:3000/api/animals
 
 //POST: GET http://localhost:3000/api/animals
-/*{
+/*
+
+
+// GET: Obtener todos los animales
+// URL: http://localhost:3000/api/animals
+
+
+
+// POST: Crear un nuevo animal
+// URL: http://localhost:3000/api/animals
+/* Body (JSON):
+{
+
   "nombre": "Tigre",
   "edad": 7,
   "tipo": "Felino",
   "codigo": "T001"
 }
+<<<<<<< HEAD
   */
 
  // DELETE: http://localhost:3000/api/animals/67f587ce96d3e3905a2df222
@@ -38,3 +52,25 @@ node src/index.js
 
 INSTALAR CORS:
 npm install cors
+
+*/
+//
+
+
+
+// PUT: Actualizar un animal existente
+// URL: http://localhost:3000/api/animals/67f587ce96d3e3905a2df222
+/* Body (JSON):
+{
+  "nombre": "Tigre de Bengala",
+  "edad": 8,
+  "tipo": "Felino",
+  "codigo": "T001-B"
+}
+*/
+
+
+
+// DELETE: Eliminar un animal
+// URL: http://localhost:3000/api/animals/67f587ce96d3e3905a2df222
+
